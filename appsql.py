@@ -15,7 +15,7 @@ conn = init_connection()
 
 conn.autocommit = True
 
-sql = """select * from qst1"""
+sql = """select * from qst2"""
 cursor = conn.cursor()
 cursor.execute(sql)
 df=pd.DataFrame(cursor.fetchall(),columns=['Username',	'Nome',	'Cognome',	'Livello_sodisfazione',	'q1',	'q2',	'q3',	'q4',	'q5',	'time'])
@@ -113,7 +113,7 @@ if check_password():
                 L=len(pd.DataFrame(get_data()))
                 dx=df.append(pd.DataFrame(get_data()).loc[L-1,:],ignore_index=True)
                 st.write(dx)
-                sql = """INSERT INTO qst1 (Username, Nome, Cognome,Livello_sodisfazione, q1, q2,q3 ,q4 ,q5 , time) VALUES (dx["Username"].iloc[-1],dx["Nome"].iloc[-1],dx["Cognome"].iloc[-1],dx["Livello_sodisfazione"].iloc[-1],dx["q1"].iloc[-1],dx["q2"].iloc[-1],dx["q3"].iloc[-1],dx["q4"].iloc[-1],dx["q5"].iloc[-1],dx["time"].iloc[-1])"""
+                sql = """INSERT INTO qst2 (Username, Nome, Cognome,Livello_sodisfazione, q1, q2,q3 ,q4 ,q5 , time) VALUES (dx["Username"].iloc[-1],dx["Nome"].iloc[-1],dx["Cognome"].iloc[-1],dx["Livello_sodisfazione"].iloc[-1],dx["q1"].iloc[-1],dx["q2"].iloc[-1],dx["q3"].iloc[-1],dx["q4"].iloc[-1],dx["q5"].iloc[-1],dx["time"].iloc[-1])"""
                 cursor = conn.cursor()
                 cursor.execute(sql)
                 st.title('la sua esame è finito 😊.')
