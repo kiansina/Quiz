@@ -3,9 +3,6 @@ import pandas as pd
 import psycopg2
 
 
-secrets = hiddencld.secrets()
-
-
 # Initialize connection.
 # Uses st.experimental_singleton to only run once.
 @st.experimental_singleton
