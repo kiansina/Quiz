@@ -113,7 +113,7 @@ if check_password():
                 L=len(pd.DataFrame(get_data()))
                 dx=df.append(pd.DataFrame(get_data()).loc[L-1,:],ignore_index=True)
                 st.write(dx)
-                sql = """INSERT INTO qst1 (Username, Nome, Cognome,Livello_sodisfazione, q1, q2,q3 ,q4 ,q5 , time) VALUES (dx["Username”].loc[-1],dx[“Nome”].loc[-1],dx[“Cognome”].loc[-1],dx[“Livello_sodisfazione”].loc[-1],dx[“q1”].loc[-1],dx[“q2”].loc[-1],dx[“q3”].loc[-1],dx[“q4”].loc[-1],dx[“q5”].loc[-1],dx[“time"].loc[-1])
+                sql = """INSERT INTO qst1 (Username, Nome, Cognome,Livello_sodisfazione, q1, q2,q3 ,q4 ,q5 , time) VALUES (dx["Username”].loc[-1],dx[“Nome”].loc[-1],dx[“Cognome”].loc[-1],dx[“Livello_sodisfazione”].loc[-1],dx[“q1”].loc[-1],dx[“q2”].loc[-1],dx[“q3”].loc[-1],dx[“q4”].loc[-1],dx[“q5”].loc[-1],dx[“time"].loc[-1])"""
                 cursor = conn.cursor()
                 cursor.execute(sql)
                 st.title('la sua esame è finito 😊.')
