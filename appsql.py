@@ -112,7 +112,8 @@ if check_password():
             if st.button("Confirm"):
                 L=len(pd.DataFrame(get_data()))
                 dx=df.append(pd.DataFrame(get_data()).loc[L-1,:],ignore_index=True)
-                sql = """INSERT INTO qst (Username, Nome, Cognome,Livello_sodisfazione, q1, q2,q3 ,q4 ,q5 , time) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')""".format("Username".loc[-1],"Nome".loc[-1],"Cognome".loc[-1], "Livello sodisfazione".loc[-1], "q1".loc[-1], "q2".loc[-1], "q3".loc[-1], "q4".loc[-1], "q5".loc[-1], "time".loc[-1])
+                st.write(dx)
+                sql = """INSERT INTO qst (Username, Nome, Cognome,Livello_sodisfazione, q1, q2,q3 ,q4 ,q5 , time) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')""".format(Username,Nome,Cognome, Livello sodisfazione, q1, q2, q3, q4, q5, time)
                 cursor = conn.cursor()
                 cursor.execute(sql)
                 st.title('la sua esame è finito 😊.')
