@@ -105,7 +105,7 @@ if check_password():
             Qd=st.text_input(questions[str(st.session_state["rn"][3])])
             Qe=st.text_input(questions[str(st.session_state["rn"][4])])
             if st.button("Submit"):
-                get_data().append({"Username":Username,"Nome": Nome,"Cognome":Cognome, "Livello sodisfazione": sodisfazione, "q1": Qa, "q2": Qb, "q3": Qc, "q4": Qd, "q5": Qe, "time":time.time()-st.session_state["t0"]})
+                get_data().append({"Username":Username,"Nome": Nome,"Cognome":Cognome, "Livello_sodisfazione": sodisfazione, "q1": Qa, "q2": Qb, "q3": Qc, "q4": Qd, "q5": Qe, "time":time.time()-st.session_state["t0"]})
                 A=pd.DataFrame(get_data())
                 st.write(A)
             st.write('Se Lei è sicuro da chiudere l\'esamae, premi conferma')
@@ -113,7 +113,7 @@ if check_password():
                 L=len(pd.DataFrame(get_data()))
                 dx=df.append(pd.DataFrame(get_data()).loc[L-1,:],ignore_index=True)
                 st.write(dx)
-                sql = """INSERT INTO qst (Username, Nome, Cognome,Livello_sodisfazione, q1, q2,q3 ,q4 ,q5 , time) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')""".format("Username","Nome","Cognome", "Livello sodisfazione", "q1", "q2", "q3", "q4", "q5", "time")
+                sql = """INSERT INTO qst (Username, Nome, Cognome,Livello_sodisfazione, q1, q2,q3 ,q4 ,q5 , time) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')""".format("Username","Nome","Cognome", "Livello_sodisfazione", "q1", "q2", "q3", "q4", "q5", "time")
                 cursor = conn.cursor()
                 cursor.execute(sql)
                 st.title('la sua esame è finito 😊.')
