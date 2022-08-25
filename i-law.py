@@ -105,8 +105,8 @@ def check_password():
         # Password correct.
         return True
 
-if "t0" not in st.session_state:
-    st.session_state["t0"] = time.time()
+#if "t0" not in st.session_state:
+#    st.session_state["t0"] = time.time()
 if "st" not in st.session_state:
     st.session_state["st"]= True
 if "usercheck" not in st.session_state:
@@ -125,7 +125,10 @@ def ran():
 
 st.session_state["ch0"], st.session_state["ch1"] ,st.session_state["ch2"] ,st.session_state["ch3"] ,st.session_state["ch4"] ,st.session_state["cho0"],st.session_state["cho1"] , st.session_state["cho2"] , st.session_state["cho3"] , st.session_state["cho4"] , st.session_state["che0"] , st.session_state["che1"],st.session_state["che2"], st.session_state["che3"], st.session_state["che4"]=ran()
 
-
+@st.experimental_singleton
+def tim():
+    st.session_state["t0"] = time.time()
+    return st.session_state["t0"]
 
 if check_password():
     @st.cache(allow_output_mutation=True)
@@ -141,6 +144,7 @@ if check_password():
         else:
             st.session_state['usercheck']=True
             st.session_state['st']=True
+            st.session_state["t0"]=tim()
     if st.session_state['usercheck']==True:
         if st.session_state["st"]==True:
             Nome = st.text_input("Nome:")
@@ -158,10 +162,10 @@ if check_password():
                 st.write(A)
             st.title('Se Lei è sicuro da chiudere l\'esamae, premi conferma')
             if st.button("Confirm"):
-                L=len(pd.DataFrame(get_data()))
-                dx=df.append(st.session_state["B"].loc[L-1,:],ignore_index=True)
+                #L=len(pd.DataFrame(get_data()))
+                #dx=df.append(st.session_state["B"].iloc[-1,:],ignore_index=True)
                 #sql = """INSERT INTO qst (Username, Nome, Cognome,Livello_sodisfazione, q1, q2,q3 ,q4 ,q5 , time) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')""".format("Username".loc[-1],"Nome".loc[-1],"Cognome".loc[-1], "Livello sodisfazione".loc[-1], "q1".loc[-1], "q2".loc[-1], "q3".loc[-1], "q4".loc[-1], "q5".loc[-1], "time".loc[-1])
-                sql = """INSERT INTO qst (Username, Nome, Cognome,Livello_sodisfazione, q1, q2,q3 ,q4 ,q5 , time) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')""".format (st.session_state["B"].loc[L-1,"Username"] ,st.session_state["B"].loc[L-1,"Nome"] , st.session_state["B"].loc[L-1,"Cognome"] ,st.session_state["B"].loc[L-1,"Livello_sodisfazione"] , st.session_state["B"].loc[L-1,"q1"] , st.session_state["B"].loc[L-1,"q2"] ,st.session_state["B"].loc[L-1,"q3"] ,st.session_state["B"].loc[L-1,"q4"] ,st.session_state["B"].loc[L-1,"q5"]  ,dx["time"].iloc[-1])
+                sql = """INSERT INTO qst (Username, Nome, Cognome,Livello_sodisfazione, q1, q2,q3 ,q4 ,q5 , time) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')""".format (st.session_state["B"].loc[0,"Username"] ,st.session_state["B"].loc[0,"Nome"] , st.session_state["B"].loc[0,"Cognome"] ,st.session_state["B"].loc[0,"Livello_sodisfazione"] , st.session_state["B"].loc[0,"q1"] , st.session_state["B"].loc[0,"q2"] ,st.session_state["B"].loc[0,"q3"] ,st.session_state["B"].loc[0,"q4"] ,st.session_state["B"].loc[0,"q5"]  ,st.session_state["B"].loc[0,"time"])
                 #sql = """INSERT INTO qst2 (Username, Nome, Cognome,Livello_sodisfazione, q1, q2,q3 ,q4 ,q5 , time) VALUES ('{}','{}')""".format (dx["grade"].iloc[-1],dx["number"].iloc[-1])
 
                 cursor = conn.cursor()
