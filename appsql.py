@@ -1,10 +1,33 @@
+#CREATE TABLE qst2
+# (Username TEXT PRIMARY KEY, Nome TEXT NOT NULL, Cognome TEXT NOT NULL,
+#  Livello_sodisfazione varchar(32) NOT NULL, q1 varchar(32), q2 varchar(32),
+#  q3 varchar(32),q4 varchar(32),q5 varchar(32), time varchar(32));
+
+
+
+#INSERT INTO qst2 (Username, Nome, Cognome,Livello_sodisfazione, q1, q2,q3 ,q4 ,q5 , time) VALUES('ssin','sin','sin','100','sin','sin','sin','sin','sin','120');
+
+
+
+
 import streamlit as st
 import pandas as pd
 import psycopg2
 import time
 import random
+from PIL import Image
 
+img=Image.open('lo.jfif')
+st.set_page_config(page_title="Questionnaire", page_icon=img)
 
+hide_menu_style= """
+          <style>
+          #MainMenu {visibility: hidden; }
+          footer {visibility: hidden;}
+          </style>
+          """
+
+st.markdown(hide_menu_style, unsafe_allow_html=True)
 # Initialize connection.
 # Uses st.experimental_singleton to only run once.
 @st.experimental_singleton
@@ -15,7 +38,7 @@ conn = init_connection()
 
 conn.autocommit = True
 
-sql = """select * from qst2"""
+sql = """select * from qst"""
 cursor = conn.cursor()
 cursor.execute(sql)
 df=pd.DataFrame(cursor.fetchall(),columns=['Username',	'Nome',	'Cognome',	'Livello_sodisfazione',	'q1',	'q2',	'q3',	'q4',	'q5',	'time'])
@@ -35,7 +58,18 @@ questions = {
   "10": "se giusto è sbaglio è sbaglio è sbaglio, che cosa è giusto?"
 }
 
-
+choices = {
+"1": [("4","T"),("8","F"),("0","F")],
+"2": [("9","T"),("6","F"),("8","F")],
+"3": [("Cielo","T"),("Rosa","F"),("Viola","F")],
+"4": [("Cibo","T"),("Pasta","F"),("Coffee","F")],
+"5": [("Nonna","T"),("Zia","F"),("Cugina","F")],
+"6": [("16","T"),("12","F"),("18","F")],
+"7": [("14","T"),("16","F"),("18","F")],
+"8": [("13","T"),("16","F"),("14","F")],
+"9": [("Roma","T"),("Milano","F"),("Torino","F")],
+"10": [("Nulla","T"),("Tutto","F"),("Sbaglio","F")],
+}
 
 def check_password():
     """Returns `True` if the user had a correct password."""
@@ -80,6 +114,19 @@ if "usercheck" not in st.session_state:
 if "rn" not in st.session_state:
     st.session_state["rn"] = random.sample(range(1, 10), 5)
 
+
+@st.experimental_singleton
+def ran():
+    for i in range(0,len(st.session_state["rn"])):
+        st.session_state["ch{}".format(i)]=random.sample(choices[str(st.session_state["rn"][i])],k=len(choices[str(st.session_state["rn"][i])]))
+        st.session_state["cho{}".format(i)]=[x[0] for x in st.session_state["ch{}".format(i)]]
+        st.session_state["che{}".format(i)]=[x[1] for x in st.session_state["ch{}".format(i)]]
+    return st.session_state["ch0"], st.session_state["ch1"] ,st.session_state["ch2"] ,st.session_state["ch3"] ,st.session_state["ch4"] ,st.session_state["cho0"], st.session_state["cho1"] , st.session_state["cho2"] , st.session_state["cho3"] , st.session_state["cho4"] , st.session_state["che0"] , st.session_state["che1"], st.session_state["che2"], st.session_state["che3"], st.session_state["che4"]
+
+st.session_state["ch0"], st.session_state["ch1"] ,st.session_state["ch2"] ,st.session_state["ch3"] ,st.session_state["ch4"] ,st.session_state["cho0"],st.session_state["cho1"] , st.session_state["cho2"] , st.session_state["cho3"] , st.session_state["cho4"] , st.session_state["che0"] , st.session_state["che1"],st.session_state["che2"], st.session_state["che3"], st.session_state["che4"]=ran()
+
+
+
 if check_password():
     @st.cache(allow_output_mutation=True)
     def get_data():
@@ -99,21 +146,24 @@ if check_password():
             Nome = st.text_input("Nome:")
             Cognome = st.text_input("Cognome:")
             sodisfazione = st.slider("Sodisfazione", 0, 100)
-            Qa=st.text_input(questions[str(st.session_state["rn"][0])])
-            Qb=st.text_input(questions[str(st.session_state["rn"][1])])
-            Qc=st.text_input(questions[str(st.session_state["rn"][2])])
-            Qd=st.text_input(questions[str(st.session_state["rn"][3])])
-            Qe=st.text_input(questions[str(st.session_state["rn"][4])])
+            Qa=st.radio("1)    "+questions[str(st.session_state["rn"][0])],st.session_state["cho0"],horizontal=False)
+            Qb=st.radio("2)    "+questions[str(st.session_state["rn"][1])],st.session_state["cho1"],horizontal=False)
+            Qc=st.radio("3)    "+questions[str(st.session_state["rn"][2])],st.session_state["cho2"],horizontal=False)
+            Qd=st.radio("4)    "+questions[str(st.session_state["rn"][3])],st.session_state["cho3"],horizontal=False)
+            Qe=st.radio("5)    "+questions[str(st.session_state["rn"][4])],st.session_state["cho4"],horizontal=False)
             if st.button("Submit"):
                 get_data().append({"Username":Username,"Nome": Nome,"Cognome":Cognome, "Livello_sodisfazione": sodisfazione, "q1": Qa, "q2": Qb, "q3": Qc, "q4": Qd, "q5": Qe, "time":time.time()-st.session_state["t0"]})
                 A=pd.DataFrame(get_data())
+                st.session_state["B"]=pd.DataFrame({"Username":Username,"Nome": Nome,"Cognome":Cognome, "Livello_sodisfazione": sodisfazione, "q1": st.session_state["che0"][st.session_state["cho0"].index(Qa)], "q2": st.session_state["che1"][st.session_state["cho1"].index(Qb)], "q3": st.session_state["che2"][st.session_state["cho2"].index(Qc)], "q4": st.session_state["che3"][st.session_state["cho3"].index(Qd)], "q5": st.session_state["che4"][st.session_state["cho4"].index(Qe)], "time":(time.time()-st.session_state["t0"])//60},index=[0])
                 st.write(A)
-            st.write('Se Lei è sicuro da chiudere l\'esamae, premi conferma')
+            st.title('Se Lei è sicuro da chiudere l\'esamae, premi conferma')
             if st.button("Confirm"):
                 L=len(pd.DataFrame(get_data()))
-                dx=df.append(pd.DataFrame(get_data()).loc[L-1,:],ignore_index=True)
-                st.write(dx)
-                sql = """INSERT INTO qst2 (Username, Nome, Cognome,Livello_sodisfazione, q1, q2,q3 ,q4 ,q5 , time) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')""".format (dx["Username"].iloc[-1],dx["Nome"].iloc[-1],dx["Cognome"].iloc[-1],dx["Livello_sodisfazione"].iloc[-1],dx["q1"].iloc[-1],dx["q2"].iloc[-1],dx["q3"].iloc[-1],dx["q4"].iloc[-1],dx["q5"].iloc[-1],dx["time"].iloc[-1])
+                dx=df.append(st.session_state["B"].loc[L-1,:],ignore_index=True)
+                #sql = """INSERT INTO qst (Username, Nome, Cognome,Livello_sodisfazione, q1, q2,q3 ,q4 ,q5 , time) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')""".format("Username".loc[-1],"Nome".loc[-1],"Cognome".loc[-1], "Livello sodisfazione".loc[-1], "q1".loc[-1], "q2".loc[-1], "q3".loc[-1], "q4".loc[-1], "q5".loc[-1], "time".loc[-1])
+                sql = """INSERT INTO qst (Username, Nome, Cognome,Livello_sodisfazione, q1, q2,q3 ,q4 ,q5 , time) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')""".format (st.session_state["B"].loc[L-1,"Username"] ,st.session_state["B"].loc[L-1,"Nome"] , st.session_state["B"].loc[L-1,"Cognome"] ,st.session_state["B"].loc[L-1,"Livello_sodisfazione"] , st.session_state["B"].loc[L-1,"q1"] , st.session_state["B"].loc[L-1,"q2"] ,st.session_state["B"].loc[L-1,"q3"] ,st.session_state["B"].loc[L-1,"q4"] ,st.session_state["B"].loc[L-1,"q5"]  ,dx["time"].iloc[-1])
+                #sql = """INSERT INTO qst2 (Username, Nome, Cognome,Livello_sodisfazione, q1, q2,q3 ,q4 ,q5 , time) VALUES ('{}','{}')""".format (dx["grade"].iloc[-1],dx["number"].iloc[-1])
+
                 cursor = conn.cursor()
                 cursor.execute(sql)
                 st.title('la sua esame è finito 😊.')
