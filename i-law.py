@@ -103,7 +103,7 @@ def check_password():
         return False
     else:
         # Password correct.
-        return True
+        return True , st.session_state["username"]
 
 #if "t0" not in st.session_state:
 #    st.session_state["t0"] = time.time()
@@ -132,11 +132,12 @@ def tim():
 
 @st.cache(allow_output_mutation=True)
 def get_data():
-    return [],st.session_state["username"]
+    return []
 
-DFST,st.session_state["username"]=get_data()
 
 if check_password():
+    kos,st.session_state["username"]=check_password()
+    DFST=get_data()
     st.title('Benvenuto al Bordo Gentile {} 🚀'.format(st.session_state["username"]))
     st.title('Controlla lo stato della sua esame per favore')
     if st.button("check"):
@@ -164,7 +165,7 @@ if check_password():
             if st.button("Submit"):
                 DFST.append({"Username":st.session_state["username"],"Nome": Nome,"Cognome":Cognome, "Livello_sodisfazione": sodisfazione, "q1": Qa, "q2": Qb, "q3": Qc, "q4": Qd, "q5": Qe, "time":time.time()-st.session_state["t0"]})
                 st.session_state["B"]=pd.DataFrame({"Username":st.session_state["username"],"Nome": Nome,"Cognome":Cognome, "Livello_sodisfazione": sodisfazione, "q1": st.session_state["che0"][st.session_state["cho0"].index(Qa)], "q2": st.session_state["che1"][st.session_state["cho1"].index(Qb)], "q3": st.session_state["che2"][st.session_state["cho2"].index(Qc)], "q4": st.session_state["che3"][st.session_state["cho3"].index(Qd)], "q5": st.session_state["che4"][st.session_state["cho4"].index(Qe)], "time":(time.time()-st.session_state["t0"])//60},index=[0])
-                st.write(DFST)
+                st.write(pd.DataFrame(DFST))
             st.title('Se Lei è sicuro da chiudere l\'esamae, premi conferma')
             if st.button("Confirm"):
                 #L=len(pd.DataFrame(get_data()))
