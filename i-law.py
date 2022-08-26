@@ -130,7 +130,7 @@ def tim():
     st.session_state["t0"] = time.time()
     return st.session_state["t0"]
 
-@st.experimental_singleton
+@st.experimental_memo
 def use():
     return st.session_state["username"]
 
