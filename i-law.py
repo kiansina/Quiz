@@ -130,7 +130,7 @@ def tim():
     st.session_state["t0"] = time.time()
     return st.session_state["t0"]
 
-@st.cache(allow_output_mutation=True)
+#@st.cache(allow_output_mutation=True)
 def get_data():
     return []
 
