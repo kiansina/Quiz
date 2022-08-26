@@ -41,7 +41,7 @@ conn.autocommit = True
 sql = """select * from qst"""
 cursor = conn.cursor()
 cursor.execute(sql)
-df=pd.DataFrame(cursor.fetchall(),columns=['Username',	'Nome',	'Cognome',	'Livello_sodisfazione',	'q1',	'q2',	'q3',	'q4',	'q5',	'time'])
+df=pd.DataFrame(cursor.fetchall(),columns=['Username',	'Nome',	'Cognome',	'Livello_sodisfazione',	'q1',	'q2',	'q3',	'q4',	'q5',	'time', 'first_time'])
 
 
 
