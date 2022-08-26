@@ -115,7 +115,7 @@ if "rn" not in st.session_state:
     st.session_state["rn"] = random.sample(range(1, 10), 5)
 
 
-@st.experimental_singleton
+#@st.experimental_singleton
 def ran():
     for i in range(0,len(st.session_state["rn"])):
         st.session_state["ch{}".format(i)]=random.sample(choices[str(st.session_state["rn"][i])],k=len(choices[str(st.session_state["rn"][i])]))
