@@ -125,7 +125,7 @@ def ran():
 
 st.session_state["ch0"], st.session_state["ch1"] ,st.session_state["ch2"] ,st.session_state["ch3"] ,st.session_state["ch4"] ,st.session_state["cho0"],st.session_state["cho1"] , st.session_state["cho2"] , st.session_state["cho3"] , st.session_state["cho4"] , st.session_state["che0"] , st.session_state["che1"],st.session_state["che2"], st.session_state["che3"], st.session_state["che4"]=ran()
 
-@st.experimental_singleton
+
 def tim():
     st.session_state["t0"] = time.time()
     return st.session_state["t0"]
